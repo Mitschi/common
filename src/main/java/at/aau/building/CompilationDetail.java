@@ -1,5 +1,8 @@
 package at.aau.building;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by chris on 29.11.17.
  */
@@ -14,15 +17,17 @@ public class CompilationDetail {
     private String type;    //variable
     private String name;    //RequestBody
     private String location;//class: com.alibaba...
+    private List<String> offendingClasses = new ArrayList<>(); //classes that don't go together (type mismatch)
 
     public CompilationDetail(){}
-    public CompilationDetail(int lineNumber, int colNumber, String file, String type, String name, String location) {
+    public CompilationDetail(int lineNumber, int colNumber, String file, String type, String name, String location, List<String> offendingClasses) {
         this.lineNumber = lineNumber;
         this.colNumber = colNumber;
         this.file = file;
         this.type = type;
         this.name = name;
         this.location = location;
+        this.offendingClasses = offendingClasses;
     }
 
     public int getLineNumber() {
@@ -73,6 +78,27 @@ public class CompilationDetail {
         this.location = location;
     }
 
+    public List<String> getOffendingClasses() {
+        return offendingClasses;
+    }
+
+    public void setOffendingClasses(List<String> offendingClasses) {
+        this.offendingClasses = offendingClasses;
+    }
+
+    @Override
+    public String toString() {
+        return "CompilationDetail{" +
+                "lineNumber=" + lineNumber +
+                ", colNumber=" + colNumber +
+                ", file='" + file + '\'' +
+                ", type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", offendingClasses=" + offendingClasses +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,7 +111,8 @@ public class CompilationDetail {
         if (file != null ? !file.equals(that.file) : that.file != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return location != null ? location.equals(that.location) : that.location == null;
+        if (location != null ? !location.equals(that.location) : that.location != null) return false;
+        return offendingClasses != null ? offendingClasses.equals(that.offendingClasses) : that.offendingClasses == null;
     }
 
     @Override
@@ -96,18 +123,7 @@ public class CompilationDetail {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + (offendingClasses != null ? offendingClasses.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "CompilationDetail{" +
-                "lineNumber=" + lineNumber +
-                ", colNumber=" + colNumber +
-                ", file='" + file + '\'' +
-                ", type='" + type + '\'' +
-                ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                '}';
     }
 }
